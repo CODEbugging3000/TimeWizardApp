@@ -1,0 +1,6 @@
+*TimeWizardDependences/
+
+*.pyc
+__pycache__/
+
+.vscode/
