@@ -1,0 +1,55 @@
+/* Estilos personalizados para a página Time Wizard com esquema escuro e tons de roxo */
+
+body {
+    background-color: #1a1a2e; /* Fundo escuro */
+    color: #ffffff; /* Texto branco */
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .navbar {
+    background-color: #2e2e4d; /* Fundo roxo escuro */
+  }
+  
+  .navbar-brand, .nav-link {
+    color: #b084cc !important; /* Texto roxo claro */
+  }
+  
+  .nav-link:hover {
+    color: #e4c1f9 !important; /* Texto mais claro ao passar o mouse */
+  }
+  
+  .custom-button {
+    background-color: transparent;
+    color: #b084cc;
+    border: 2px solid #b084cc;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .custom-button:hover {
+    background-color: #b084cc;
+    color: #1a1a2e;
+  }
+  
+  #hero {
+    background-color: #3a3a5e; /* Fundo roxo escuro */
+    color: #ffffff;
+  }
+  
+  #features {
+    color: #ffffff;
+  }
+  
+  .text-purple {
+    color: #b084cc; /* Roxo claro */
+  }
+  
+  #about {
+    background-color: #2e2e4d;
+    color: #ffffff;
+  }
+  
+  footer {
+    background-color: #1a1a2e;
+    color: #b084cc;
+  }
+  

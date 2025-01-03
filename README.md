@@ -14,6 +14,5 @@
 ## No DOCKER:
 ```console
     $ docker build -t bmvci .
-    $ docker run -d -p 8080:8080-v 
-    $ (pwd):/app bmvci
+    $ docker run -d -p 8080:8080 -v $(pwd):/app bmvci
 ```

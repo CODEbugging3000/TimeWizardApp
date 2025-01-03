@@ -5,6 +5,8 @@ class Application():
 
     def __init__(self):
         self.pages = {
+            'helper': self.helper,
+            'index': self.index
         }
 
 
@@ -15,3 +17,7 @@ class Application():
 
     def helper(self):
         return template('app/views/html/helper')
+
+
+    def index(self):
+        return template('app/views/html/index')
