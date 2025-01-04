@@ -25,9 +25,12 @@ def helper(info= None):
 def index():
     return ctl.render('index')
 
+@app.route('/login')
+def login():
+    return ctl.render('login')
 
 #-----------------------------------------------------------------------------
 
 
 if __name__ == '__main__':
-    run(app, host='0.0.0.0', port=8080, debug=True)
+    run(app, host='0.0.0.0', port=8080, debug=True, reloader=True)
