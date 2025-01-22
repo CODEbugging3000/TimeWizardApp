@@ -4,3 +4,5 @@
 __pycache__/
 
 .vscode/
+
+meu_banco.db

@@ -1,0 +1,51 @@
+.btn-purple {
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+}
+.btn-purple:hover {
+    background-color: #5a3699;
+}
+
+.text-purple {
+    color: #6f42c1;
+}
+main{
+    padding-top: 70px;
+}
+.label{
+    color: #ffffff;
+}
+
+
+/* Estilos personalizados para a página Time Wizard com esquema escuro e tons de roxo */
+
+.navbar {
+    background-color: #2e2e4d; /* Fundo roxo escuro */
+}
+
+.navbar-brand, .nav-link {
+    color: #b084cc !important; /* Texto roxo claro */
+}
+
+.nav-link:hover {
+    color: #e4c1f9 !important; /* Texto mais claro ao passar o mouse */
+}
+
+.custom-button {
+    background-color: transparent;
+    color: #b084cc;
+    border: 2px solid #b084cc;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-button:hover {
+    background-color: #b084cc;
+    color: #1a1a2e;
+}
+
+.text-purple {
+    color: #b084cc; /* Roxo claro */
+}
+
+

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../../static/icons/favicon.ico">
+    <link rel = "stylesheet" href = "../../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link href="../../static/css/home.css" rel="stylesheet" type="text/css" >
+    <title>Time Wizard</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-center" href="/home">
+                <img src="../../static/img/LogoTimeWizard.png" alt="Logo" width="90" height="72" class="d-inline-block">
+                Time Wizard
+            </a>
+        </div>
+    </nav>
+    </header>
+    <main class="container-fluid">
+        <div class="row">
+            <div class="sidebar bg-dark d-flex col-2">
+            <nav class="nav flex-column row nav-tabs">
+                <a id="hoje" class="nav-link active" href="#">Hoje</a>
+                <a id="add-tarefa" class="nav-link" href="#">Cadastrar Tarefas</a>
+                <a id="add-habito" class="nav-link" href="#">Cadastrar Hábitos</a>
+            </nav>
+            </div>
+
+            <div id="cards-place" class="flex-column col-10">
+                <div class="card " style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Título da tarefa</h5>
+                        <button></button>
+                        <p class="card-text">Descrição detalhada da tarefa.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Prioridade: </li>
+                        <li class="list-group-item">Tempo estimado: INT min</li>
+                        <li class="list-group-item">Data limite: DD/MM/AAAA</li>
+                    </ul>
+                    <div class="card-body">
+                        <p class="card-text">Tags:</p>
+                        <a href="#" class="card-link">Trabalho</a>
+                        <a href="#" class="card-link">Pessoal</a>
+                        <a href="#" class="card-link">Estudo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cadastro-tarefa flex-column col-10">
+                <h2>Cadastrar Tarefa</h2>
+                <form id="form-tarefa" action="/add-tarefa" method="POST">
+                    <label for="titulo">Título:</label>
+                    <input type="text" name="titulo" required>
+                    <label for="descricao">Descrição:</label>
+                    <textarea name="descricao" required></textarea>
+                    <label for="prioridade">Prioridade:</label>
+                    <div id="priority-buttons">
+                        <button type="button" class="btn-prioridade btn" data-value="muito alta">Muito Alta</button>
+                        <button type="button" class="btn-prioridade btn" data-value="alta">Alta</button>
+                        <button type="button" class="btn-prioridade btn" data-value="media">Média</button>
+                        <button type="button" class="btn-prioridade btn" data-value="baixa">Baixa</button>
+                        <button type="button" class="btn-prioridade btn" data-value="muito baixa">Muito Baixa</button>
+                    </div>
+                    <input type="hidden" name="prioridade" id="prioridade" required>
+                    <button type="submit" class="btn btn-secondary">Cadastrar</button>
+                </form>
+            </div>
+
+            <div class="cadastro-habito flex-column col-10">
+                <h2>Cadastrar Hábito</h2>
+                <form id="form-habito" action="/add-habito" method="POST">
+                    <button type="submit" class="btn btn-secondary">Cadastrar</button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">&copy; 2025 Time Wizard. Todos os direitos reservados.</p>
+    </footer>
+    <script src="../../static/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
+    <script src="../../static/js/home.js"></script>
+</body>
+</html>
