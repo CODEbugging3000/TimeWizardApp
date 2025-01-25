@@ -1,12 +1,10 @@
 from app.controllers.application import Application
 from bottle import Bottle, route, run, request, static_file
 from bottle import redirect, template, response
-from app.controllers.SQLite import BancodeDados
 
 app = Bottle()
 ctl = Application()
-DB = BancodeDados()
-DB.criar_tabelas()
+
 #-----------------------------------------------------------------------------
 # Rotas:
 
@@ -34,12 +32,12 @@ def do_login():
     senha = request.forms.password
     login = ctl.checar_login(email, senha)
     if login:
-        response.set_cookie('account', email)
+        response.set_cookie('account', login[1])
         return redirect('home') # Usuário encontrado e senha correta
     elif login is None:
         return ctl.render('login') # Usuário não encontrado
     else:
-        return ctl.render('<h1 style="color:red;">Senha incorreta</h1>') # Usuário encontrado, mas senha incorreta
+        return """<h1 style="color:red;">Senha incorreta</h1> <a href="/login">login</a>""" # Usuário encontrado, mas senha incorreta
 
 @app.route('/cadastrar')
 def cadastrar():
@@ -54,17 +52,30 @@ def do_cadastrar():
     if cadastrou:
         return ctl.render('login')
     else:
-        return "<h1 style='color:red;'>Usuário ja cadastrado</h1>"
+        return """<h1 style='color:red;'>Usuário ja cadastrado</h1><a href="/login">login</a>"""
 
-@app.route('/home', method=["GET", "POST"])
+@app.route('/home')
 def home():
-    if request.method == "GET":
-        if 'account' in request.cookies:
-            return ctl.render('home')
-        else:
-            return "<h1 style='color:red;'>Voce nao esta logado</h1>"
-    elif request.method == "POST":
-        pass
+    if 'account' in request.cookies and ctl.verify_section_id(request.cookies['account']) != "":
+        return ctl.render('home', listar_tarefas=ctl.listar_tarefas(request.cookies['account']))
+    else:
+        return """<h1 style='color:red;'>Voce nâo esta logado!</h1><a href="/login">Fazer login</a>"""
+
+@app.post('/add-tarefa')
+def add_tarefa():
+    titulo = request.forms.titulo
+    description = request.forms.descricao
+    prioridade = request.forms.prioridade
+    tempo = request.forms.tempo
+    data_limite = request.forms.data_limite
+    tags = request.forms.tags
+    email = ""
+    added = ctl.add_tarefa(request.cookies['account'], email, titulo, description, prioridade, tempo, data_limite, tags)
+    if added:
+        return ctl.render('home')
+    else:
+        return """<h1 style='color:red;'>Erro ao adicionar tarefa</h1><a href="/home">Voltar</a>"""
+
 
 #-----------------------------------------------------------------------------
 

@@ -28,3 +28,6 @@ body{
   background-color: #2e2e4d;
   color: #ffffff;
 }
+.navbar-brand, .nav-link {
+  color: #b084cc !important; /* Texto roxo claro */
+}

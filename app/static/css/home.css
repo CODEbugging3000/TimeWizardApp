@@ -1,16 +1,29 @@
+@media (max-width: 768px) {
+    .card {
+        flex: 0 0 calc(50% - 16px); /* Ajusta para 50% em telas menores */
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        flex: 0 0 100%; /* Ajusta para 100% em telas muito pequenas */
+    }
+}
+
 .sidebar {
-    height: 100vh;
-    background-color: #343a40;
-}   
+    height: calc(100vh - 72px); /* Altura total da viewport menos a altura do header */
+    position: sticky;
+    top: 72px; /* Garante que a barra fique fixa logo abaixo do header */
+    overflow-y: auto; /* Adiciona rolagem se o conteúdo for maior que a tela */
+}
+
 .nav-link {
     color: #ffffff;
     border-radius: 4px;
     transition: background-color 0.3s;
     width: 100%;
 }
-nav{
-    width: 100%;
-}
+
 .nav-link:hover {
     background-color: #495057;
     color: #f8f9fa;
@@ -24,15 +37,22 @@ nav{
 .card {
     background-color: #2d2f36;
     color: #ffffff;
+    flex: 1 1 calc(25% - 16px); /* Define que cada card ocupa até 25% do container menos o gap */
     border: none;
+    max-width: 300px; /* Define uma largura máxima para os cards */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Garante que padding e bordas estejam inclusos na largura */
 }
 
 .card .card-title {
     font-size: 1.25rem;
     color: #d39e00;
 }
-
+.card-head{
+    align-items:center;
+    display: flexbox;
+    gap: 5.2rem;
+}
 .card .list-group-item {
     background-color: #3e4045;
     border: none;
@@ -49,21 +69,85 @@ nav{
 }
 
 #cards-place {
-    padding: 1rem;
-    border-radius: 8px;
-    border-radius: 0rem;
-    background-color: rgb(62, 55, 69);
+    display: flex;
+    flex-wrap: wrap; /* Permite que os cards quebrem linha quando necessário */
+    gap: 16px; /* Espaçamento entre os cards */
+    justify-content: flex-start; /* Alinha os cards no início */
+    align-content: flex-start; /* Garante que os cards ocupem o espaço disponível no container */
+    padding: 20px;
 }
+
+#cadastro-place{
+    text-align: center;
+    color:#ffffff;
+    padding: 1rem;
+    width: 70rem;
+    height: auto;
+    border-radius: 10px;
+    /* IA */
+    margin: 40px auto;
+    display: block;
+    max-width: 50rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#priority-buttons{
+    display: flex;
+    justify-content: center; /* Centraliza os botões horizontalmente */
+    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas menores */
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
 body {
+    background-color: rgb(62, 55, 69);
     transition: all 0.3s ease;
 }
 
 footer {
-    position: relative;
-    padding: 1rem;
+    margin-top: auto;
     background-color: #212529;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
 }
 
 .nav-link, .card-link {
     transition: all 0.3s ease;
+}
+
+
+/* ChatGPT */
+#priority-buttons button.active {
+    background-color: var(--bs-primary); /* Cor do botão ativo */
+    color: white;
+    border-color: var(--bs-primary);
+}
+
+#priority-buttons button.active.btn-outline-danger {
+    background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+}
+
+#priority-buttons button.active.btn-outline-warning {
+    background-color: var(--bs-warning);
+    border-color: var(--bs-warning);
+}
+
+#priority-buttons button.active.btn-outline-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+#priority-buttons button.active.btn-outline-info {
+    background-color: var(--bs-info);
+    border-color: var(--bs-info);
+}
+
+#priority-buttons button.active.btn-outline-secondary {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+.navbar-brand {
+    color: #b084cc !important; /* Texto roxo claro */
 }
