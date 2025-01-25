@@ -1,4 +1,3 @@
-from webbrowser import get
 from bottle import template
 from .SQLite import BancodeDados
 from ..models.tarefa import Tarefa
@@ -31,7 +30,7 @@ class Application():
         return template('app/views/html/login')
     
     def home(self):
-        return template('app/views/html/home', listar_tarefas=self.listar_tarefas) # passa o metodo listar_tarefas que retorna uma lista de tuplas
+        return template('app/views/html/home', listar_tarefas = self.listar_tarefas) # passa o metodo listar_tarefas que retorna uma lista de tuplas
 
     def cadastrar(self):
         return template('app/views/html/cadastrar')
@@ -67,10 +66,10 @@ class Application():
         if self.verify_section_id(section_id) == "":
             return False
         else:
-            email = self._db.get_email_by_section_id(email)
+            email = self._db.get_email_by_section_id(section_id)
             self._db.inserir_tarefa(email, tarefa.titulo, tarefa.description, tarefa.prioridade, tarefa.tempo, tarefa.data_limite, tarefa.tags)
             return True
-        
+    
     def listar_tarefas(self, section_id):
         email = self._db.get_email_by_section_id(section_id)
         return self._db.listar_tarefas(email)

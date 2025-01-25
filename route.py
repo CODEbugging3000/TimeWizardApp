@@ -35,7 +35,7 @@ def do_login():
         response.set_cookie('account', login[1])
         return redirect('home') # Usuário encontrado e senha correta
     elif login is None:
-        return ctl.render('login') # Usuário não encontrado
+        return """<h1 style="color:red;">Usuário nao encontrado</h1> <a href="/login">login</a>""" # Usuário não encontrado
     else:
         return """<h1 style="color:red;">Senha incorreta</h1> <a href="/login">login</a>""" # Usuário encontrado, mas senha incorreta
 
@@ -57,7 +57,7 @@ def do_cadastrar():
 @app.route('/home')
 def home():
     if 'account' in request.cookies and ctl.verify_section_id(request.cookies['account']) != "":
-        return ctl.render('home', listar_tarefas=ctl.listar_tarefas(request.cookies['account']))
+        return ctl.render('home')
     else:
         return """<h1 style='color:red;'>Voce nâo esta logado!</h1><a href="/login">Fazer login</a>"""
 

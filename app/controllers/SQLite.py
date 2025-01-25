@@ -112,3 +112,4 @@ class BancodeDados:
         email = self.email_split(email)
         self._cursor.execute(f"SELECT * FROM tarefas_de_{email}")
         return self._cursor.fetchall() # retorna lista com tuplas
+    
