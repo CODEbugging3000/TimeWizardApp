@@ -68,13 +68,27 @@
     color: #ffc107;
 }
 
-#cards-place {
+.cards-place{
     display: flex;
     flex-wrap: wrap; /* Permite que os cards quebrem linha quando necessário */
     gap: 16px; /* Espaçamento entre os cards */
     justify-content: flex-start; /* Alinha os cards no início */
     align-content: flex-start; /* Garante que os cards ocupem o espaço disponível no container */
     padding: 20px;
+}
+
+.habito-hoje{
+    text-align: center;
+    color:#ffffff;
+    padding: 1rem;
+    width: 90rem;
+    height: auto;
+    border-radius: 10px;
+    margin: 40px auto;
+    display: block;
+    max-width: 50rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #cadastro-place{
@@ -99,6 +113,28 @@
     font-size: 16px;
 }
 
+#habito-place{
+    text-align: center;
+    color:#ffffff;
+    padding: 1rem;
+    width: 70rem;
+    height: auto;
+    border-radius: 10px;
+    /* IA */
+    margin: 40px auto;
+    display: block;
+    max-width: 50rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-check{
+    color: #d1d1d1;
+    text-align: left;
+    padding: 0 20px;
+    font-size: 16px;
+}
+
 body {
     background-color: rgb(62, 55, 69);
     transition: all 0.3s ease;
@@ -117,7 +153,6 @@ footer {
 }
 
 
-/* ChatGPT */
 #priority-buttons button.active {
     background-color: var(--bs-primary); /* Cor do botão ativo */
     color: white;
@@ -149,5 +184,5 @@ footer {
     border-color: var(--bs-secondary);
 }
 .navbar-brand {
-    color: #b084cc !important; /* Texto roxo claro */
+    color: #b084cc !important; 
 }

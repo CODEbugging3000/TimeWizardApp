@@ -56,10 +56,14 @@ def do_cadastrar():
 
 @app.route('/home')
 def home():
-    if 'account' in request.cookies and ctl.verify_section_id(request.cookies['account']) != "":
-        return ctl.render('home')
-    else:
-        return """<h1 style='color:red;'>Voce nâo esta logado!</h1><a href="/login">Fazer login</a>"""
+    # Verifica se o usuário está logado
+    if 'account' in request.cookies:
+        section_id = request.cookies.get('account')
+        if ctl.verify_section_id(section_id) != "":
+            # Passa o section_id para o método home
+            return ctl.render('home', section_id=section_id)
+    # Caso o usuário não esteja logado
+    return """<h1 style='color:red;'>Você não está logado!</h1><a href="/login">Fazer login</a>"""
 
 @app.post('/add-tarefa')
 def add_tarefa():
@@ -72,12 +76,12 @@ def add_tarefa():
     email = ""
     added = ctl.add_tarefa(request.cookies['account'], email, titulo, description, prioridade, tempo, data_limite, tags)
     if added:
-        return ctl.render('home')
+        return ctl.render('home', section_id=request.cookies['account'])
     else:
         return """<h1 style='color:red;'>Erro ao adicionar tarefa</h1><a href="/home">Voltar</a>"""
 
 
-#-----------------------------------------------------------------------------
+#--------------------------------------------------------------------------------
 
 
 if __name__ == '__main__':

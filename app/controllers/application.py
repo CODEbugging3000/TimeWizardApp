@@ -1,3 +1,4 @@
+from datetime import datetime
 from bottle import template
 from .SQLite import BancodeDados
 from ..models.tarefa import Tarefa
@@ -16,9 +17,9 @@ class Application():
         self._db = BancodeDados()
         self._db.criar_tabelas()
 
-    def render(self,page):
+    def render(self,page, **kwargs):
         content = self.pages.get(page, self.helper)
-        return content()
+        return content(**kwargs)
 
     def helper(self):
         return template('app/views/html/helper')
@@ -29,9 +30,9 @@ class Application():
     def login(self):
         return template('app/views/html/login')
     
-    def home(self):
-        return template('app/views/html/home', listar_tarefas = self.listar_tarefas) # passa o metodo listar_tarefas que retorna uma lista de tuplas
-
+    def home(self, section_id):
+        return template('app/views/html/home', tarefas = self.listar_tarefas(section_id)) # passa o metodo listar_tarefas que retorna uma lista de tuplas
+    
     def cadastrar(self):
         return template('app/views/html/cadastrar')
 
@@ -50,7 +51,7 @@ class Application():
             return None # Usuário não encontrado
         else:
             return False # Usuário encontrado, mas senha incorreta
-
+        
     def fazer_cadastro(self, email, senha, nome):
         verify = self._db.verificar_usuario(email, senha)
         if type(verify) is tuple:
@@ -62,7 +63,7 @@ class Application():
         return self._db.get_id(section_id)
     
     def add_tarefa(self, section_id, email, titulo, description, prioridade, tempo, data_limite, tags):
-        tarefa = Tarefa(titulo, description, prioridade, tempo, data_limite, tags)
+        tarefa = Tarefa(id, titulo, description, prioridade, tempo, data_limite, tags)
         if self.verify_section_id(section_id) == "":
             return False
         else:
@@ -72,4 +73,20 @@ class Application():
     
     def listar_tarefas(self, section_id):
         email = self._db.get_email_by_section_id(section_id)
-        return self._db.listar_tarefas(email)
+        tarefas = self._db.listar_tarefas(email) # retorna uma lista de tuplas 
+        # Converte tuplas para objetos Tarefa
+        lista_tarefas = []
+        for tarefa in tarefas:
+            data_limite_formatada = datetime.strptime(tarefa[6], "%Y-%m-%dT%H:%M").strftime("%d/%m/%Y - %H:%M")
+            lista_tarefas.append(
+                Tarefa(
+                    id=tarefa[0],
+                    titulo=tarefa[2],
+                    description=tarefa[3],
+                    prioridade=tarefa[4],
+                    tempo=tarefa[5],
+                    data_limite=data_limite_formatada,  # Data formatada
+                    tags=tarefa[7]
+                )
+            )
+        return lista_tarefas
