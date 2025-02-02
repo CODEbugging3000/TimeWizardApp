@@ -1,39 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Seleciona todos os links da sidebar
-    const navLinks = document.querySelectorAll(".nav-link");
-    // Seleciona todas as divs de conteúdo
-    const sections = ["cards-place", "cadastro-place", "habito-place"];
+    // Lista de IDs das seções da página
+    const sections = ["cards-place", "cadastro-place", "habito-place", "perfil-place"];
 
-    // Função para exibir a seção correspondente e esconder as outras
+    // Função para mostrar a seção desejada e esconder as outras
     const showSection = (sectionId) => {
         sections.forEach((id) => {
             const section = document.getElementById(id);
-            if (id === sectionId) {
-                section.style.display = ""; // Mostra a seção
-            } else {
-                section.style.display = "none"; // Oculta as outras
+            if (section) {
+                section.style.display = id === sectionId ? "" : "none";
             }
         });
     };
 
-    // Adiciona o evento de clique para cada link da sidebar
+    // Adiciona evento de clique nos links da sidebar (se houver)
+    const navLinks = document.querySelectorAll(".nav-link");
     navLinks.forEach((link) => {
         link.addEventListener("click", (event) => {
-            event.preventDefault(); // Evita o comportamento padrão do link
-            // Remove a classe "active" de todos os links
+            event.preventDefault();
             navLinks.forEach((nav) => nav.classList.remove("active"));
-            // Adiciona a classe "active" ao link clicado
             link.classList.add("active");
 
-            // Obtém o ID da seção a ser exibida a partir do atributo href do link
-            const targetSection = link.getAttribute("href").substring(1); // Remove o '#' do href
-            showSection(targetSection); // Exibe a seção correspondente
+            const targetSection = link.getAttribute("href").substring(1);
+            showSection(targetSection);
         });
     });
 
-    // Exibe a seção inicial (cards-place) ao carregar a página
+    // Adiciona evento de clique no botão "Perfil"
+    const profileButton = document.querySelector(".btn-outline-light.d-flex");
+    if (profileButton) {
+        profileButton.addEventListener("click", () => {
+            showSection("perfil-place");
+        });
+    }
+
+    // Exibe a seção inicial ao carregar a página
     showSection("cards-place");
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const priorityButtons = document.querySelectorAll("#priority-buttons button");

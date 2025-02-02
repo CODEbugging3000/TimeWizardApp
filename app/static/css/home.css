@@ -85,10 +85,10 @@
     height: auto;
     border-radius: 10px;
     margin: 40px auto;
-    display: block;
     max-width: 50rem;
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    grid-column: auto;
 }
 
 #cadastro-place{
@@ -127,7 +127,20 @@
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+#perfil-place{
+    text-align: center;
+    color:#ffffff;
+    padding: 1rem;
+    width: 70rem;
+    height: auto;
+    border-radius: 10px;
+    align-items: center;
+    /* IA */
+    margin: 40px auto;
+    max-width: 50rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 .form-check{
     color: #d1d1d1;
     text-align: left;

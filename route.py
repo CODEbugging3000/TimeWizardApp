@@ -2,6 +2,7 @@ from app.controllers.application import Application
 from bottle import Bottle, route, run, request, static_file
 from bottle import redirect, template, response
 
+
 app = Bottle()
 ctl = Application()
 
@@ -35,7 +36,7 @@ def do_login():
         response.set_cookie('account', login[1])
         return redirect('home') # Usuário encontrado e senha correta
     elif login is None:
-        return """<h1 style="color:red;">Usuário nao encontrado</h1> <a href="/login">login</a>""" # Usuário não encontrado
+        return """<h1 style="color:red;">Usuário nao encontrado</h1> <a href="/login">login</a> <a href="/cadastrar">cadastrar</a>""" # Usuário não encontrado
     else:
         return """<h1 style="color:red;">Senha incorreta</h1> <a href="/login">login</a>""" # Usuário encontrado, mas senha incorreta
 
@@ -80,7 +81,36 @@ def add_tarefa():
     else:
         return """<h1 style='color:red;'>Erro ao adicionar tarefa</h1><a href="/home">Voltar</a>"""
 
+@app.post('/add-habito')
+def add_habito():
+    id_tarefa = request.forms.tarefa_id
+    segunda = request.forms.segunda
+    terca = request.forms.terca
+    quarta = request.forms.quarta
+    quinta = request.forms.quinta
+    sexta = request.forms.sexta
+    sabado = request.forms.sabado
+    domingo = request.forms.domingo
+    dias_da_semana = [segunda, terca, quarta, quinta, sexta, sabado, domingo]
+    dias = ""
+    for dia in dias_da_semana:
+        if dia != "":
+            dias = dias + ", " + dia
+    dias = dias[1:]
+    horario = request.forms.horario
+    added = ctl.add_habito(request.cookies['account'], id_tarefa, dias, horario)
+    if added:
+        return ctl.render('home', section_id=request.cookies['account'])
+    else:
+        return """<h1 style='color:red;'>Erro ao adicionar tarefa</h1><a href="/home">Voltar</a>"""
 
+@app.route('/logout')
+def logout():
+    if ctl.logout(request.cookies['account']):
+        response.delete_cookie('account')
+        return redirect('/')
+    else:
+        return """<h1 style='color:red;'>Erro ao fazer logout</h1><a href="/home">Voltar</a>"""
 #--------------------------------------------------------------------------------
 
 

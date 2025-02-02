@@ -1,8 +1,9 @@
-from app.models.tarefa import Tarefa
-class Habito(Tarefa):
+class Habito:
     """" Objeto do tipo Habito para armazenamento de tarefas de habito """
-    def __init__(self, titulo, description, prioridade, tempo, data_limite, tags, dias_dasemana):
-        super().__init__(titulo, description, prioridade, tempo, data_limite, tags) # Chama o construtor da classe pai (Tarefa) para inicializar atributos herdados
+    def __init__(self, id_habito, id_tarefa, dias_da_semana, horario):
         # Adiciona o atributo específico de Habito
-        self.dias_dasemana = dias_dasemana 
+        self.dias_da_semana = dias_da_semana 
+        self.id_habito = id_habito
+        self.id_tarefa = id_tarefa
+        self.horario = horario
         

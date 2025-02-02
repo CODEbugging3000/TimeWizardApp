@@ -5,7 +5,7 @@ class BancodeDados:
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super().__new__(cls, *args, **kwargs)
-            cls._instance._conn = sqlite3.connect('meu_banco.db')
+            cls._instance._conn = sqlite3.connect('app/controllers/db/meu_banco.db')
             cls._instance._cursor = cls._instance._conn.cursor()
         return cls._instance
 
@@ -15,7 +15,8 @@ class BancodeDados:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT NOT NULL,
                 senha TEXT NOT NULL,
-                nome TEXT NOT NULL
+                nome TEXT NOT NULL,
+                xp INTEGER DEFAULT 0 -- XP inicia em 0
             )
         """)
         self._cursor.execute("""
@@ -28,7 +29,7 @@ class BancodeDados:
         self._cursor.execute("""
             CREATE TABLE IF NOT EXISTS tarefas(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email TEXT,
+                email TEXT NOT NULL,
                 titulo TEXT,
                 descricao TEXT,
                 prioridade TEXT,
@@ -39,10 +40,11 @@ class BancodeDados:
         """)
         self._cursor.execute("""
             CREATE TABLE IF NOT EXISTS habitos (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email TEXT,
+                id_habito INTEGER PRIMARY KEY AUTOINCREMENT,
+                id_tarefa INTEGER,
                 dias_da_semana TEXT,
-                horario TEXT
+                horario TEXT,
+                FOREIGN KEY (id_tarefa) REFERENCES tarefas (id)
             )
         """)
         self._conn.commit()
@@ -112,3 +114,34 @@ class BancodeDados:
     def listar_tarefas(self, email):
         self._cursor.execute(f"SELECT * FROM tarefas WHERE email = '{email}'")
         return self._cursor.fetchall() # retorna lista com tuplas
+
+    def inserir_habito(self, id_tarefa, dias_da_semana, horario):
+        try:
+            self._cursor.execute("""
+                INSERT INTO habitos (id_tarefa, dias_da_semana, horario)
+                VALUES (?, ?, ?)
+            """, (id_tarefa, dias_da_semana, horario))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+
+    def listar_habitos(self, section_id):
+        email = self.get_email_by_section_id(section_id)
+        self._cursor.execute(
+        "SELECT * FROM habitos WHERE id_tarefa IN (SELECT id FROM tarefas WHERE email = ?)", (email,)
+        )
+        resposta = self._cursor.fetchall()
+        return resposta
+    
+    def get_usuario(self, email):
+        self._cursor.execute("SELECT * FROM usuarios WHERE email = ?", (email,))
+        return self._cursor.fetchone()
+
+    def delete_session(self, section_id):
+        try:
+            self._cursor.execute("DELETE FROM sessoes WHERE section_id = ?", (section_id,))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
