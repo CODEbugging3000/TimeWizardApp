@@ -1,13 +1,11 @@
 from datetime import datetime
 from bottle import template
-
-from app.models import usuario
+import uuid
 
 from ..models.habito import Habito
 from .SQLite import BancodeDados
 from ..models.tarefa import Tarefa
 from ..models.usuario import User
-import uuid
 
 
 class Application():
@@ -130,3 +128,5 @@ class Application():
             return True
         else:
             return False
+        
+    

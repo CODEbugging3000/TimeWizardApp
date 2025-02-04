@@ -62,8 +62,8 @@
                                     <div class="card-head d-flex justify-content-between">
                                         % for tarefa in tarefas:
                                             % if habito.id_tarefa == tarefa.id:
-                                            <h5 class="card-title">{{tarefa.titulo}}</h5>
-                                            <button class="btn btn-secondary">{{tarefa.prioridade}}</button>
+                                                <h5 class="card-title">{{tarefa.titulo}}</h5>
+                                                <button class="btn btn-secondary">{{tarefa.prioridade}}</button>
                                             % end
                                         % end
                                     </div>
