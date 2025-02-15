@@ -1,7 +1,5 @@
-from queue import Empty
 import sqlite3
-
-from app.models import tarefa
+from bcrypt import hashpw, gensalt, checkpw
 class BancodeDados:
     _instance = None  # Singleton para garantir uma única conexão
     def __new__(cls, *args, **kwargs):

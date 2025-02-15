@@ -397,7 +397,7 @@
                         <h5 class="card-title">Perfil</h5>
                         <p class="card-text">Nome: {{user.name}}</p>
                         <p class="card-text">Email: {{user.email}}</p>
-                        <p class="card-text">Senha: {{user.password}}</p>
+                        <p class="card-text">Senha: ***********</p>
                         <p class="card-text">XP: {{user.xp}}</p>
                         <button type="button" class="btn btn-secondary">Editar</button>
                     </div>

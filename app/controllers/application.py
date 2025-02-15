@@ -120,7 +120,7 @@ class Application():
     def dados_do_usuario(self, section_id):
         email = self._db.get_email_by_section_id(section_id)
         tupla_usuario = self._db.get_usuario(email)
-        user = User(tupla_usuario[1], tupla_usuario[2], tupla_usuario[3], tupla_usuario[4]) # email, senha, nome e xp
+        user = User(tupla_usuario[1], "", tupla_usuario[3], tupla_usuario[4]) # email, senha, nome e xp
         return user
 
     def logout(self, section_id):

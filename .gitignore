@@ -1,8 +1,5 @@
 *TimeWizardDependences/
-
 *.pyc
-__pycache__/
-
+*__pycache__/
 .vscode/
-
 meu_banco.db

@@ -1,8 +1,13 @@
-import eventlet.wsgi
+#TODO: Implementar websocket
+#TODO: Arrumar edição das tarefas
+#TODO: Fazer troca de status das tarefas
+#TODO: Implementar encriptação de senhas
+#TODO: Arrumar cadastro e login seguros
+#TODO: Fazer a gamificação
+
 from app.controllers.application import Application
 from bottle import Bottle, route, run, request, static_file
 from bottle import redirect, template, response
-import socketio
 
 app = Bottle()
 ctl = Application()
@@ -142,5 +147,3 @@ def logout():
 
 if __name__ == '__main__':
     run(app, host='0.0.0.0', port=8080, debug=True, reloader=True)
-    import eventlet
-    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 8080)), app)
