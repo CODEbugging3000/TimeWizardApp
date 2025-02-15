@@ -38,10 +38,16 @@
     background-color: #2d2f36;
     color: #ffffff;
     flex: 1 1 calc(25% - 16px); /* Define que cada card ocupa até 25% do container menos o gap */
+    border-radius: 8px;
     border: none;
+    padding: 16px;
     max-width: 300px; /* Define uma largura máxima para os cards */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
     box-sizing: border-box; /* Garante que padding e bordas estejam inclusos na largura */
+    transition: transform 0.2s ease-in-out;
+}
+.card:hover {
+    transform: scale(1.02);
 }
 
 .card .card-title {
@@ -53,9 +59,15 @@
     display: flexbox;
     gap: 5.2rem;
 }
+.card-body {
+    color: white;
+}
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 .card .list-group-item {
-    background-color: #3e4045;
-    border: none;
+    background-color: #333;
     color: #d1d1d1;
 }
 
@@ -80,17 +92,15 @@
 .habito-hoje{
     text-align: center;
     color:#ffffff;
-    padding: 1rem;
-    width: 90rem;
+    padding: 5%;
     height: auto;
     border-radius: 10px;
-    margin: 40px auto;
-    max-width: 50rem;
-    border: 1px solid #ddd;
+    margin: 40px;
+    border: 1px solid #9f77c2;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     grid-column: auto;
+    grid-row: auto;
 }
-
 #cadastro-place{
     text-align: center;
     color:#ffffff;
@@ -113,7 +123,7 @@
     font-size: 16px;
 }
 
-#habito-place{
+#edit-tarefa-place{
     text-align: center;
     color:#ffffff;
     padding: 1rem;
@@ -127,19 +137,51 @@
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-#perfil-place{
+
+#habito-place{
     text-align: center;
     color:#ffffff;
     padding: 1rem;
     width: 70rem;
     height: auto;
     border-radius: 10px;
+    /* IA */
+    margin: 40px auto;
+    display: block;
+    max-width: 50rem;
+    border: 1px solid #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#perfil-place{
+    text-align: center;
+    color:#ffffff;
+    padding: 1rem;
+    width: 70rem;
+    height: auto;
+    display: flex;
+    border-radius: 10px;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
     /* IA */
     margin: 40px auto;
     max-width: 50rem;
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.perfil{
+    justify-content: center;
+    align-self: center;
+    text-align: center;
+    color:#ffffff;
+    padding: 1rem;
+    width: 70rem;
+    height: auto;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .form-check{
     color: #d1d1d1;
@@ -197,5 +239,37 @@ footer {
     border-color: var(--bs-secondary);
 }
 .navbar-brand {
-    color: #b084cc !important; 
+    color: #9337ef !important; 
+}
+
+/* teste com IA */
+
+#tarefas-place {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 25px;
+}
+#todo-place, #doing-place, #done-place {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 300px;
+    align-items: center;
+    padding: 15px;
+    gap: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+#todo-place {
+    border-top: 5px solid red;
+}
+
+#doing-place {
+    border-top: 5px solid orange;
+}
+
+#done-place {
+    border-top: 5px solid green;
 }

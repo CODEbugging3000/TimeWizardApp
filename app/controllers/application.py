@@ -9,7 +9,6 @@ from ..models.usuario import User
 
 
 class Application():
-
     def __init__(self):
         self.pages = {
             'helper': self.helper,
@@ -66,13 +65,13 @@ class Application():
     def verify_section_id(self, section_id):
         return self._db.get_id(section_id)
     
-    def add_tarefa(self, section_id, email, titulo, description, prioridade, tempo, data_limite, tags):
-        tarefa = Tarefa(id, titulo, description, prioridade, tempo, data_limite, tags)
+    def add_tarefa(self, section_id, titulo, description, prioridade, tempo, data_limite, tags):
+        tarefa = Tarefa(id, titulo, description, prioridade, tempo, data_limite, tags, "todo")
         if self.verify_section_id(section_id) == "":
             return False
         else:
             email = self._db.get_email_by_section_id(section_id)
-            self._db.inserir_tarefa(email, tarefa.titulo, tarefa.description, tarefa.prioridade, tarefa.tempo, tarefa.data_limite, tarefa.tags)
+            self._db.inserir_tarefa(email, tarefa.titulo, tarefa.description, tarefa.prioridade, tarefa.tempo, tarefa.data_limite, tarefa.tags, tarefa.status, tarefa.xp)
             return True
     
     def listar_tarefas(self, section_id):
@@ -91,7 +90,8 @@ class Application():
                     prioridade=tarefa[4],
                     tempo=tarefa[5],
                     data_limite=data_limite_formatada,  # Data formatada
-                    tags=tarefa[7]
+                    tags=tarefa[7],
+                    status=tarefa[8],
                 )
             )
         return lista_tarefas
@@ -130,3 +130,11 @@ class Application():
             return False
         
     
+    def delete_tarefa(self, section_id, id_tarefa):
+        email = self._db.get_email_by_section_id(section_id)
+        return self._db.delete_tarefa(email, id_tarefa)
+    
+
+    def edit_tarefa(self, section_id, id_tarefa, titulo, description, prioridade, tempo, data_limite, tags):
+        email = self._db.get_email_by_section_id(section_id)
+        return self._db.edit_tarefa(email, id_tarefa, titulo, description, prioridade, tempo, data_limite, tags)

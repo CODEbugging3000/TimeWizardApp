@@ -1,5 +1,7 @@
 from queue import Empty
 import sqlite3
+
+from app.models import tarefa
 class BancodeDados:
     _instance = None  # Singleton para garantir uma única conexão
     def __new__(cls, *args, **kwargs):
@@ -35,7 +37,9 @@ class BancodeDados:
                 prioridade TEXT,
                 tempo INTEGER,
                 data_limite DATETIME,
-                tags TEXT
+                tags TEXT,
+                status TEXT,
+                xp INTEGER
             )
         """)
         self._cursor.execute("""
@@ -91,16 +95,16 @@ class BancodeDados:
 
     def get_id(self, section_id):
         self._cursor.execute("SELECT section_id FROM sessoes WHERE section_id = ?", (section_id,))
-        if self._cursor.fetchone() is Empty:
+        if type(self._cursor.fetchone()) is not tuple:
             return ""
         else:
             return section_id[0]
 
-    def inserir_tarefa(self, email, titulo, descricao, prioridade, tempo, data_limite, tags):
+    def inserir_tarefa(self, email, titulo, descricao, prioridade, tempo, data_limite, tags, status, xp):
         self._cursor.execute("""
-            INSERT INTO tarefas (email, titulo, descricao, prioridade, tempo, data_limite, tags)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (email, titulo, descricao, prioridade, int(tempo), data_limite, tags))
+            INSERT INTO tarefas (email, titulo, descricao, prioridade, tempo, data_limite, tags, status, xp)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (email, titulo, descricao, prioridade, int(tempo), data_limite, tags, status, xp))
         self._conn.commit()
 
     def get_email_by_section_id(self, section_id):
@@ -145,3 +149,24 @@ class BancodeDados:
             return True
         except sqlite3.IntegrityError:
             return False
+        
+    def delete_tarefa(self, email, id_tarefa):
+        try:
+            self._cursor.execute("DELETE FROM tarefas WHERE email = ? AND id = ?", (email, id_tarefa))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+        
+    def edit_tarefa(self, email, id_tarefa, titulo, descricao, prioridade, tempo, data_limite, tags):
+        try:
+            self._cursor.execute("""
+                UPDATE tarefas
+                SET titulo = ?, descricao = ?, prioridade = ?, tempo = ?, data_limite = ?, tags = ?
+                WHERE email = ? AND id = ?
+            """, (titulo, descricao, prioridade, int(tempo), data_limite, tags, email, id_tarefa))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+        
