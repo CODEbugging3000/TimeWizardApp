@@ -20,7 +20,7 @@ class Application():
         self._db = BancodeDados()
         self._db.criar_tabelas()
 
-    def render(self,page, **kwargs):
+    def render(self, page, **kwargs):
         content = self.pages.get(page, self.helper)
         return content(**kwargs)
 
@@ -43,21 +43,15 @@ class Application():
         verify = self._db.check_login(email, senha)
         if type(verify) is tuple:
             user = verify[0]
-            password = verify[1]
-            if user == email and password == senha:
-                section_id = str(uuid.uuid4())
-                self._db.insert_session(section_id, user)
-                return True, section_id # Usuário encontrado e senha correta
-            else:
-                return [False] # Usuário encontrado, mas senha incorreta
-        elif verify[0] is None:
-            return None # Usuário não encontrado
+            section_id = str(uuid.uuid4())
+            self._db.insert_session(section_id, user)
+            return True, section_id # Usuário encontrado e senha correta
         else:
-            return False # Usuário encontrado, mas senha incorreta
+            return False # Usuário ou senha incorretos
         
     def fazer_cadastro(self, email, senha, nome):
-        verify = self._db.verificar_usuario(email, senha)
-        if type(verify) is tuple:
+        verify = self._db.usuario_ja_existe(email)
+        if not verify:
             return False # Usuário já cadastrado
         else:
             return self._db.cadastrar_usuario(email, senha, nome)
@@ -130,11 +124,21 @@ class Application():
             return False
         
     
-    def delete_tarefa(self, section_id, id_tarefa):
-        email = self._db.get_email_by_section_id(section_id)
-        return self._db.delete_tarefa(email, id_tarefa)
-    
 
     def edit_tarefa(self, section_id, id_tarefa, titulo, description, prioridade, tempo, data_limite, tags):
         email = self._db.get_email_by_section_id(section_id)
         return self._db.edit_tarefa(email, id_tarefa, titulo, description, prioridade, tempo, data_limite, tags)
+
+    def start_task(self, user, id_tarefa):
+        return self._db.start_task(user, id_tarefa)
+
+    def finish_task(self, user, id_tarefa):
+        return self._db.finish_task(user, id_tarefa)
+    
+    def recycle_task(self, user, id_tarefa):
+        return self._db.recycle_task(user, id_tarefa)
+    
+    def delete_task(self, user, id_tarefa):
+        return self._db.delete_task(user, id_tarefa)
+
+    

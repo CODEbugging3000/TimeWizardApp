@@ -18,7 +18,7 @@ class Tarefa:
             return 5
         elif prioridade == "baixa":
             return 10
-        elif prioridade == "média":
+        elif prioridade == "media":
             return 15
         elif prioridade == "alta":
             return 20

@@ -1,5 +1,6 @@
 import sqlite3
-from bcrypt import hashpw, gensalt, checkpw
+from bcrypt import checkpw
+from ..models.usuario import User
 class BancodeDados:
     _instance = None  # Singleton para garantir uma única conexão
     def __new__(cls, *args, **kwargs):
@@ -53,23 +54,41 @@ class BancodeDados:
 
     def cadastrar_usuario(self, email, senha, nome):
         try:
-            self._cursor.execute("INSERT INTO usuarios (email, senha, nome) VALUES (?, ?, ?)", (email, senha, nome))
+            usuario = User(email, senha, nome, 0)
+            self._cursor.execute("INSERT INTO usuarios (email, senha, nome) VALUES (?, ?, ?)", (usuario.email, usuario.password, usuario.name))
             self._conn.commit()
             return True
         except sqlite3.IntegrityError:
             return False
 
-    def verificar_usuario(self, email, senha):
-        self._cursor.execute("SELECT email, senha FROM usuarios WHERE email = ? AND senha = ?", (email, senha))
-        resposta = self._cursor.fetchone()
-        if type(resposta) is tuple:
-            return resposta
+    def __verificar_usuario(self, email: str, senha: str) -> tuple | None:
+        """
+        Verifica se o e-mail e a senha informados são válidos.
+        Se forem válidos, retorna uma tupla com o e-mail.
+        Caso contrário, retorna None.
+        """
+        self._cursor.execute("SELECT senha, email FROM usuarios WHERE email = ?", (email,))
+        row = self._cursor.fetchone()
+        if row is None:
+            return None  # Usuário não encontrado
+        
+        senha_armazenada, email_armazenado = row 
+        senha_armazenada = senha_armazenada.encode('utf-8') if isinstance(senha_armazenada, str) else senha_armazenada # Converter a senha armazenada de string para bytes
+        if checkpw(senha.encode('utf-8'), senha_armazenada):# Verificar se a senha está correta
+            return (email_armazenado,)  # Retorna uma tupla com o e-mail
         else:
-            return None
+            return None  # Senha incorreta
 
+    def check_login(self, email, senha):
+            verify = self.__verificar_usuario(email, senha)
+            if type(verify) is tuple:
+                return verify
+            else:
+                return verify # Usuário não encontrado -> None
+    
     def usuario_ja_existe(self, email):
         self._cursor.execute("SELECT * FROM usuarios WHERE email = ?", (email,))
-        if self._cursor.fetchone() is None:
+        if type(self._cursor.fetchone()) is tuple:
             return False
         else:
             return True
@@ -77,15 +96,6 @@ class BancodeDados:
     def fechar_conexao(self):
         self._conn.close()
         BancodeDados._instance = None
-
-    def check_login(self, email, senha):
-        verify = self.verificar_usuario(email, senha)
-        if verify:
-            user = self.verificar_usuario(email, senha)[0]
-            password = self.verificar_usuario(email, senha)[1]
-            return (user, password)
-        else:
-            return [None] # Usuário não encontrado
 
     def insert_session(self, section_id, user):
         self._cursor.execute("INSERT INTO sessoes (section_id, email) VALUES (?, ?)", (section_id, user))
@@ -148,7 +158,7 @@ class BancodeDados:
         except sqlite3.IntegrityError:
             return False
         
-    def delete_tarefa(self, email, id_tarefa):
+    def delete_task(self, email, id_tarefa):
         try:
             self._cursor.execute("DELETE FROM tarefas WHERE email = ? AND id = ?", (email, id_tarefa))
             self._conn.commit()
@@ -167,4 +177,28 @@ class BancodeDados:
             return True
         except sqlite3.IntegrityError:
             return False
+    
+    def start_task(self, user, id_tarefa):
+        try:
+            self._cursor.execute("UPDATE tarefas SET status = 'doing' WHERE email = ? AND id = ?", (user, id_tarefa))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+    
+    def finish_task(self, user, id_tarefa):
+        try:
+            self._cursor.execute("UPDATE tarefas SET status = 'done' WHERE email = ? AND id = ?", (user, id_tarefa))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
         
+    def recycle_task(self, user, id_tarefa):
+        try:
+            self._cursor.execute("UPDATE tarefas SET status = 'todo' WHERE email = ? AND id = ?", (user, id_tarefa))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+    

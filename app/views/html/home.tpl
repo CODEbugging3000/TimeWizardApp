@@ -6,7 +6,7 @@
     <link rel="icon" type="image/x-icon" href="../../static/icons/favicon.ico">
     <link rel = "stylesheet" href = "../../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link href="../../static/css/home.css" rel="stylesheet" type="text/css" >
-    <title>Time Wizard</title>
+    <title>Time Wizard App</title>
 </head>
 <body>
     <header>
@@ -98,11 +98,11 @@
                         <div id="todo-place" class=" col-4 p-3 rounded shadow-sm text-center text-white"><h4> Pendente </h4>
                             % for tarefa in tarefas:
                                 % if tarefa.status == 'todo':
-                                    <div class="card">
+                                    <div id="tarefa-{{tarefa.id}}" class="card">
                                         <div class="card-body">
                                             <div class="card-head d-flex justify-content-between">
                                                 <h5 id="titulo-{{tarefa.id}}" class="card-title">{{tarefa.titulo}}</h5>
-                                                <button   href="#edit-tarefa-place" data-value="{{tarefa.id}}" class="edit-task-button btn btn-outline-light" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                <button href="#edit-tarefa-place" data-value="{{tarefa.id}}" class="edit-task-button btn btn-outline-light" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                     <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                                 </svg></button>
                                             </div>
@@ -111,16 +111,16 @@
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Prioridade: 
                                                 % if tarefa.prioridade.lower() == "muito alta":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-danger text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "alta":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-warning text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "media":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-primary text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "baixa":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-info text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "muito baixa":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-secondary text-center">{{tarefa.prioridade}}</span>
-                                                    % end
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-danger text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "alta":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-warning text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "media":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-primary text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "baixa":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-info text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "muito baixa":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-secondary text-center">{{tarefa.prioridade}}</span>
+                                                % end
                                             </li>
                                             <li id="tempo-{{tarefa.id}}" class="list-group-item d-flex">Tempo estimado: {{tarefa.tempo}} minutos </li>
                                             <li id="data-limite-{{tarefa.id}}" class="list-group-item d-flex">Data limite: {{tarefa.data_limite}} </li>
@@ -135,41 +135,35 @@
                                                 <div class="col-9 text-center align-self-center">
                                                     Status:
                                                     % if tarefa.status == "todo":
-                                                        <span class="badge text-bg-danger">Pendente</span>
+                                                        <span  id="status-{{tarefa.id}}" class="badge text-bg-danger">Pendente</span>
                                                     % elif tarefa.status == "doing":
-                                                        <span class="badge text-bg-warning">Em andamento</span>
+                                                        <span  id="status-{{tarefa.id}}" class="badge text-bg-warning">Em andamento</span>
                                                     % elif tarefa.status == "done":
-                                                        <span class="badge text-bg-success">Concluído</span>
+                                                        <span  id="status-{{tarefa.id}}" class="badge text-bg-success">Concluído</span>
                                                     % end
                                                 </div>
                                                 <div class="col-3 text-center align-self-center">
-                                                    <form action="/delete-tarefa" method="post">
-                                                        <button type="submit" data-value="excluir-tarefa{{tarefa.id}}" class="btn btn-outline-danger">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                                            </svg>
-                                                        </button>
-                                                        <input type="hidden" name="tarefa_id" value="{{tarefa.id}}">
-                                                    </form>
+                                                    <button id="delete-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn delete-task btn-outline-danger">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                        </svg>
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <form action="/start-tarefa" method="post">
-                                                <button type="submit" data-value="comecar-tarefa{{tarefa.id}}" class="btn start-task btn-outline-light col-12 mt-2">Começar tarefa</button>
-                                                <input type="hidden" name="start-task" value="{{tarefa.id}}">
-                                            </form>
+                                            <button id="start-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn start-task btn-outline-light col-12 mt-2">Começar tarefa</button>
                                         </div>
                                     </div>
                                 % end
                             % end
                         </div>
-                        <div id="doing-place" class=" col-4 p-3 rounded shadow-sm text-center text-white"><h4> Em andamento</h4>
+                        <div id="doing-place" class=" col-4 p-3 rounded shadow-sm text-center text-white"><h4> Em andamento </h4>
                             % for tarefa in tarefas:
                                 % if tarefa.status == "doing":
-                                    <div class="card">
+                                    <div id="tarefa-{{tarefa.id}}" class="card">
                                         <div class="card-body">
                                             <div class="card-head d-flex justify-content-between">
                                                 <h5 id="titulo-{{tarefa.id}}" class="card-title">{{tarefa.titulo}}</h5>
-                                                <button   href="#edit-tarefa-place" data-value="{{tarefa.id}}" class="edit-task-button btn btn-outline-light" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                <button  href="#edit-tarefa-place" data-value="{{tarefa.id}}" class="edit-task-button btn btn-outline-light" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                     <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
                                                 </svg></button>
                                             </div>
@@ -178,16 +172,16 @@
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Prioridade: 
                                                 % if tarefa.prioridade.lower() == "muito alta":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-danger text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "alta":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-warning text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "media":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-primary text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "baixa":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-info text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "muito baixa":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-secondary text-center">{{tarefa.prioridade}}</span>
-                                                    % end
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-danger text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "alta":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-warning text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "media":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-primary text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "baixa":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-info text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "muito baixa":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-secondary text-center">{{tarefa.prioridade}}</span>
+                                                % end
                                             </li>
                                             <li id="tempo-{{tarefa.id}}" class="list-group-item d-flex">Tempo estimado: {{tarefa.tempo}} minutos </li>
                                             <li id="data-limite-{{tarefa.id}}" class="list-group-item d-flex">Data limite: {{tarefa.data_limite}} </li>
@@ -202,28 +196,22 @@
                                                 <div class="col-9 text-center align-self-center">
                                                     Status:
                                                     % if tarefa.status == "todo":
-                                                        <span class="badge text-bg-danger">Pendente</span>
+                                                        <span id="status-{{tarefa.id}}" class="badge text-bg-danger">Pendente</span>
                                                     % elif tarefa.status == "doing":
-                                                        <span class="badge text-bg-warning">Em andamento</span>
+                                                        <span id="status-{{tarefa.id}}" class="badge text-bg-warning">Em andamento</span>
                                                     % elif tarefa.status == "done":
-                                                        <span class="badge text-bg-success">Concluído</span>
+                                                        <span id="status-{{tarefa.id}}" class="badge text-bg-success">Concluído</span>
                                                     % end
                                                 </div>
                                                 <div class="col-3 text-center align-self-center">
-                                                    <form action="/delete-tarefa" method="post">
-                                                        <button type="submit" data-value="excluir-tarefa{{tarefa.id}}" class="btn btn-outline-danger">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                                            </svg>
-                                                        </button>
-                                                        <input type="hidden" name="tarefa_id" value="{{tarefa.id}}">
-                                                    </form>
+                                                    <button id="delete-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn delete-task btn-outline-danger">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                        </svg>
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <form action="/start-tarefa" method="post">
-                                                <button type="submit" data-value="comecar-tarefa{{tarefa.id}}" class="btn start-task btn-outline-light col-12 mt-2">Começar tarefa</button>
-                                                <input type="hidden" name="start-task" value="{{tarefa.id}}">
-                                            </form>
+                                            <button id="finish-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn finish-task btn-outline-light col-12 mt-2">Finalizar Tarefa</button>
                                         </div>
                                     </div>
                                 % end
@@ -232,7 +220,7 @@
                         <div id="done-place" class="col-4 p-3 rounded shadow-sm text-center text-white"> <h4> Concluído </h4>
                             % for tarefa in tarefas:
                                 % if tarefa.status == "done":
-                                    <div class="card">
+                                    <div id="tarefa-{{tarefa.id}}" class="card">
                                         <div class="card-body">
                                             <div class="card-head d-flex justify-content-between">
                                                 <h5 id="titulo-{{tarefa.id}}" class="card-title">{{tarefa.titulo}}</h5>
@@ -245,16 +233,16 @@
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Prioridade: 
                                                 % if tarefa.prioridade.lower() == "muito alta":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-danger text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "alta":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-warning text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "media":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-primary text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "baixa":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-info text-center">{{tarefa.prioridade}}</span>
-                                                    % elif tarefa.prioridade.lower() == "muito baixa":
-                                                        <span id="prioridade-{{tarefa.id}}" class="badge text-bg-secondary text-center">{{tarefa.prioridade}}</span>
-                                                    % end
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-danger text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "alta":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-warning text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "media":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-primary text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "baixa":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-info text-center">{{tarefa.prioridade}}</span>
+                                                % elif tarefa.prioridade.lower() == "muito baixa":
+                                                    <span id="prioridade-{{tarefa.id}}" class="badge text-bg-secondary text-center">{{tarefa.prioridade}}</span>
+                                                % end
                                             </li>
                                             <li id="tempo-{{tarefa.id}}" class="list-group-item d-flex">Tempo estimado: {{tarefa.tempo}} minutos </li>
                                             <li id="data-limite-{{tarefa.id}}" class="list-group-item d-flex">Data limite: {{tarefa.data_limite}} </li>
@@ -269,28 +257,22 @@
                                                 <div class="col-9 text-center align-self-center">
                                                     Status:
                                                     % if tarefa.status == "todo":
-                                                        <span class="badge text-bg-danger">Pendente</span>
+                                                        <span id="status-{{tarefa.id}}" class="badge text-bg-danger">Pendente</span>
                                                     % elif tarefa.status == "doing":
-                                                        <span class="badge text-bg-warning">Em andamento</span>
+                                                        <span id="status-{{tarefa.id}}" class="badge text-bg-warning">Em andamento</span>
                                                     % elif tarefa.status == "done":
-                                                        <span class="badge text-bg-success">Concluído</span>
+                                                        <span id="status-{{tarefa.id}}" class="badge text-bg-success">Concluído</span>
                                                     % end
                                                 </div>
                                                 <div class="col-3 text-center align-self-center">
-                                                    <form action="/delete-tarefa" method="post">
-                                                        <button type="submit" data-value="excluir-tarefa{{tarefa.id}}" class="btn btn-outline-danger">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                                            </svg>
-                                                        </button>
-                                                        <input type="hidden" name="tarefa_id" value="{{tarefa.id}}">
-                                                    </form>
+                                                    <button id="delete-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn delete-task btn-outline-danger">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                                        </svg>
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <form action="/start-tarefa" method="post">
-                                                <button type="submit" data-value="comecar-tarefa{{tarefa.id}}" class="btn start-task btn-outline-light col-12 mt-2">Começar tarefa</button>
-                                                <input type="hidden" name="start-task" value="{{tarefa.id}}">
-                                            </form>
+                                            <button id="done-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn btn-success col-12 mt-2">Tarefa Concluída</button>
                                         </div>
                                     </div>
                                 % end
@@ -331,7 +313,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="data" class="form-label">Data limite:</label>
-                        <input type="datetime-local" name="data_limite" class="form-control" required>
+                        <input id="form-data-limite" type="datetime-local" name="data_limite" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label for="tags" class="form-label">Tags:</label>
@@ -347,11 +329,17 @@
                     <div class="mb-3">
                         <label for="nome" class="form-label"><h5>Qual tarefa você quer trasnsformar em hábito? </h5></label>
                         % for tarefa in tarefas:
-                            <div class="form-check">
+                            <div id="tarefa-cad-habito-{{tarefa.id}}" class="form-check">
                                 <input class="btn-check btn-outline-light" type="radio" name="tarefa_id" id="tarefa{{tarefa.id}}" value="{{tarefa.id}}" required>
                                 <label class="btn btn-outline-light" for="tarefa{{tarefa.id}}">
                                     {{tarefa.titulo}}
                                 </label>
+                            </div>
+                        % end
+
+                        % if not tarefas:
+                            <div class="alert alert-danger" role="alert">
+                                Nenhuma tarefa cadastrada
                             </div>
                         % end
                         <label for="dias"><h5> Quais dias da semana que deseja realizar a tarefa:</h5></label>
@@ -396,7 +384,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Perfil</h5>
                         <p class="card-text">Nome: {{user.name}}</p>
-                        <p class="card-text">Email: {{user.email}}</p>
+                        <p id="user" data-value="{{user.email}}" class="card-text">Email: {{user.email}}</p>
                         <p class="card-text">Senha: ***********</p>
                         <p class="card-text">XP: {{user.xp}}</p>
                         <button type="button" class="btn btn-secondary">Editar</button>
@@ -435,7 +423,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="data" class="form-label">Data limite:</label>
-                        <input id="data_limite" type="datetime-local" name="data_limite" class="form-control" required>
+                        <input id="form-data-limite" type="datetime-local" name="data_limite" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label for="tags" class="form-label">Tags:</label>
@@ -451,6 +439,7 @@
         <p class="mb-0">&copy; 2025 Time Wizard. Todos os direitos reservados. </p>
     </footer>
     <script src="../../static/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
+    <script src="/static/js/websocket/socket.io.min.js"></script>
     <script src="../../static/js/home.js"></script>
 </body>
 </html>
