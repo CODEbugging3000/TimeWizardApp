@@ -12,4 +12,4 @@ COPY . /bmvc
 EXPOSE 8080
 
 # Comando para executar a aplicação
-CMD ["python3", "route.py"]
+CMD ["python3", "startserver.py"]
