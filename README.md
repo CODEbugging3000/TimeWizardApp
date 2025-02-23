@@ -34,3 +34,6 @@ O projeto foi desenvolvido utilizando o framework web Bottle e o framework de so
     $ docker build -t bmvci .
     $ docker run -d -p 8080:8080 -v $(pwd):/app bmvci
 ```
+
+## Gostou da ideia?
+[Contribua com o projeto](https://github.com/CODEbugging3000/TimeWizardApp) se é desenvolvedor ou designer. Agradecemos sua colaboração!
