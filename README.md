@@ -1,5 +1,5 @@
 # Time Wizard
-!(https://raw.githubusercontent.com/TimeWizard/TimeWizard/main/static/img/index-preview.png)
+!(https://raw.githubusercontent.com/CODEbugging3000/TimeWizardApp/refs/heads/main/app/static/img/Index-preview.png)
 
 ## Saiba mais sobre o projeto aqui⬇️
 [Notion sobre o projeto](https://giant-captain-22a.notion.site/Time-Wizard-161e9b38400e80d1bf11cf399c9a38ba)
