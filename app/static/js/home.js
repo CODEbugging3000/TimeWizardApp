@@ -11,6 +11,7 @@ socket.on('task_started', (tarefa_id) => {
 });
 socket.on('task_finished', (tarefa_id) => {
     finishTask(tarefa_id['task_id']);
+    updateXp(tarefa_id['new_user_xp']);
     console.log(`Tarefa finalizada: ${tarefa_id['task_id']}`);
 })
 socket.on('recycle_task', (tarefa_id) => {
@@ -24,6 +25,25 @@ socket.on('task_deleted', (tarefa_id) => {
 
 const user = document.querySelector('#user').getAttribute('data-value');
 
+let notifications = document.querySelector('.notifications');
+
+function createToast(type, icon, title, text){
+    let newToast = document.createElement('div');
+    newToast.innerHTML = `
+        <div class="toast ${type}">
+                <i class="${icon}"></i>
+                <div class="content">
+                    <div class="title">${title}</div>
+                    <span>${text}</span>
+                </div>
+                <i class="close fa-solid fa-xmark"
+                onclick="(this.parentElement).remove()"
+                ></i>
+            </div>`;
+
+    notifications.appendChild(newToast);
+    newToast.timeOut = setTimeout(() => {newToast.remove()}, 5000);
+}
 // Função para mostrar a seção desejada e esconder as outras
 const showSection = (sectionId) => {
     // Lista de IDs das seções da página
@@ -37,6 +57,8 @@ const showSection = (sectionId) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Notificação de sucesso
+    createToast('success', 'fa-solid fa-circle-check', 'Sucesso', 'Login efetuado com sucesso.');
 
     // Adiciona evento de clique nos links da sidebar
     const navLinks = document.querySelectorAll(".nav-link");
@@ -136,7 +158,11 @@ function finishTask(id_tarefa) {
     const button = document.querySelector(`#finish-task-${id_tarefa}`);
     button.classList.remove('finish-task');
     button.classList.add('recycle-task');
-    button.textContent = 'Reciclar Tarefa';
+    button.classList.remove('btn-outline-light');
+    button.classList.add('btn-success');
+    button.innerHTML = `Reciclar Tarefa <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-recycle" viewBox="0 0 16 16">
+                    <path d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.5.5 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244z"/>
+                    </svg>`;
     button.setAttribute('id', `done-task-${id_tarefa}`);
 
     // muda o card da tarefa de lugar
@@ -144,6 +170,13 @@ function finishTask(id_tarefa) {
     doneColumn.appendChild(taskCard);
 
     updateEventListeners();
+}
+
+function updateXp(xp) {
+    const xpElement = document.querySelectorAll('#user_xp');
+    xpElement.forEach(
+        xpElement => xpElement.textContent = "XP: " + xp
+    );
 }
 
 function recycleTask(id_tarefa) {
@@ -161,6 +194,8 @@ function recycleTask(id_tarefa) {
     const button = document.querySelector(`#done-task-${id_tarefa}`);
     button.classList.remove('recycle-task');
     button.classList.add('start-task');
+    button.classList.remove('btn-success');
+    button.classList.add('btn-outline-light');
     button.textContent = 'Iniciar Tarefa';
     button.setAttribute('id', `start-task-${id_tarefa}`);
 
@@ -174,10 +209,8 @@ function recycleTask(id_tarefa) {
 function deleteTask(id_tarefa) {
     const taskCard = document.querySelector(`#tarefa-${id_tarefa}`);
     taskCard.remove();
-
     const taskCheck = document.querySelector(`#tarefa-cad-habito-${id_tarefa}`);
     taskCheck.remove();
-
     updateEventListeners();
 }
 
@@ -247,7 +280,7 @@ function updateEventListeners() {
         button.addEventListener('click', () => {
             const tarefaId = button.getAttribute('data-value');
             data = editTask(tarefaId);
-            socket.emit('edit_task', user, tarefaId, data);
+            socket.emit('edit_task', user, tarefaId);
         });
     });
 

@@ -71,7 +71,6 @@ class BancodeDados:
         row = self._cursor.fetchone()
         if row is None:
             return None  # Usuário não encontrado
-        
         senha_armazenada, email_armazenado = row 
         senha_armazenada = senha_armazenada.encode('utf-8') if isinstance(senha_armazenada, str) else senha_armazenada # Converter a senha armazenada de string para bytes
         if checkpw(senha.encode('utf-8'), senha_armazenada):# Verificar se a senha está correta
@@ -202,3 +201,25 @@ class BancodeDados:
         except sqlite3.IntegrityError:
             return False
     
+    def get_xp_from_tarefa(self, id_tarefa):
+        self._cursor.execute("SELECT xp FROM tarefas WHERE id = ?", (id_tarefa,))
+        return self._cursor.fetchone()[0]
+
+    def add_xp(self, user, xp):
+        try:
+            self._cursor.execute("UPDATE usuarios SET xp = xp + ? WHERE email = ?", (xp, user))
+            self._conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+
+    def get_xp_user(self, user):
+        self._cursor.execute("SELECT xp FROM usuarios WHERE email = ?", (user,))
+        return self._cursor.fetchone()[0]
+    
+    def get_tarefa(self, id_tarefa):
+        try:
+            self._cursor.execute("SELECT * FROM tarefas WHERE id = ?", (id_tarefa,))
+            return self._cursor.fetchone()
+        except sqlite3.IntegrityError:
+            return False

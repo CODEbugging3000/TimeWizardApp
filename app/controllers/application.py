@@ -30,14 +30,14 @@ class Application():
     def index(self):
         return template('app/views/html/index')
     
-    def login(self):
-        return template('app/views/html/login')
+    def login(self, error_mesage = None):
+        return template('app/views/html/login', error_mesage = error_mesage)
     
-    def home(self, section_id):
-        return template('app/views/html/home', tarefas = self.listar_tarefas(section_id), habitos = self.listar_habitos(section_id), user = self.dados_do_usuario(section_id)) # passa o metodo listar_tarefas e listar_habitos que retornam uma lista de objetos
+    def home(self, section_id, error_mesage = None):
+        return template('app/views/html/home', tarefas = self.listar_tarefas(section_id), habitos = self.listar_habitos(section_id), user = self.dados_do_usuario(section_id), error_mesage = error_mesage) # passa o metodo listar_tarefas e listar_habitos que retornam uma lista de objetos
     
-    def cadastrar(self):
-        return template('app/views/html/cadastrar')
+    def cadastrar(self, error_mesage = None):
+        return template('app/views/html/cadastrar', error_mesage = error_mesage)
 
     def checar_login(self, email, senha):
         verify = self._db.check_login(email, senha)
@@ -91,20 +91,23 @@ class Application():
         return lista_tarefas
 
     def add_habito(self, section_id, id_tarefa, dias_da_semana, horario):
-        habito = Habito(id, id_tarefa, dias_da_semana, horario)
+        task = self._db.get_tarefa(id_tarefa)
+        tarefa = Tarefa(task[0], task[1], task[2], task[3], task[4], task[5], task[6], task[7])
+        habito = Habito(id, tarefa, dias_da_semana, horario)
         if self.verify_section_id(section_id) == "":
             return False
         else:
-            return self._db.inserir_habito(habito.id_tarefa, habito.dias_da_semana, habito.horario)
+            return self._db.inserir_habito(habito.tarefa.id, habito.dias_da_semana, habito.horario)
 
     def listar_habitos(self, section_id):
         habitos = self._db.listar_habitos(section_id)
         lista_de_habitos = []
+        
         for habito in habitos:
             lista_de_habitos.append(
                 Habito(
                     id_habito=habito[0],
-                    id_tarefa=habito[1],
+                    tarefa = Tarefa(habito[1], "", "", "", "", "", "", ""),
                     dias_da_semana=habito[2],
                     horario=habito[3]
                 )
@@ -123,7 +126,6 @@ class Application():
         else:
             return False
         
-    
 
     def edit_tarefa(self, section_id, id_tarefa, titulo, description, prioridade, tempo, data_limite, tags):
         email = self._db.get_email_by_section_id(section_id)
@@ -133,7 +135,11 @@ class Application():
         return self._db.start_task(user, id_tarefa)
 
     def finish_task(self, user, id_tarefa):
-        return self._db.finish_task(user, id_tarefa)
+        updated = self._db.finish_task(user, id_tarefa)
+        if updated:
+            xp_tarefa = self._db.get_xp_from_tarefa(id_tarefa)
+            self._db.add_xp(user, xp_tarefa)
+        return updated
     
     def recycle_task(self, user, id_tarefa):
         return self._db.recycle_task(user, id_tarefa)
@@ -141,4 +147,5 @@ class Application():
     def delete_task(self, user, id_tarefa):
         return self._db.delete_task(user, id_tarefa)
 
-    
+    def get_xp_user(self, user):
+        return self._db.get_xp_user(user)

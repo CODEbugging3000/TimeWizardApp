@@ -1,4 +1,5 @@
 #TODO: Fazer a gamificação
+#TODO: Edição de dados do usuário
 #TODO: Arrumar as Models com relacionamento entre habitos e tarefas
 
 from app.controllers.application import Application
@@ -50,7 +51,7 @@ class App:
                 response.set_cookie('account', login[1], httponly=True, secure=True, max_age=3600)
                 return redirect('home') # Usuário encontrado e senha correta
             else:
-                return """<h1 style="color:red; text-align: center;">Usuário ou senha incorretos</h1> <div style="text-align: center; align-items: center;"><a href="/login">login</a> <br> <a href="/cadastrar">cadastrar</a></div>""" # Usuário não encontrado
+                return self.ctl.render('login', error_mesage="Usuário ou senha incorretos")
 
         @self.app.route('/cadastrar')
         def cadastrar():
@@ -63,9 +64,9 @@ class App:
             nome = request.forms.nome
             cadastrou = self.ctl.fazer_cadastro(email, senha, nome)
             if cadastrou:
-                return self.ctl.render('login')
+                return self.ctl.render('login', error_mesage="Usuário cadastrado com sucesso")
             else:
-                return """<h1 style='color:red;'>Usuário já cadastrado</h1><a href="/login">login</a>"""
+                return self.ctl.render('cadastrar', error_mesage="Usuário já cadastrado")
 
         @self.app.route('/home')
         def home():
@@ -76,9 +77,9 @@ class App:
                     # Passa o section_id para o método home
                     return self.ctl.render('home', section_id=section_id)
                 else: # Caso o usuário não esteja logado
-                    return """<h1 style='color:red;'>Você não está logado!</h1><a href="/login">Fazer login</a>"""
+                    return self.ctl.render('login', error_mesage="Vocé não está logado!")
             else:
-                return """<h1 style='color:red;'> Vocé não está logado!</h1><a href="/login">Fazer login</a>"""
+                return self.ctl.render('login', error_mesage="Vocé não está logado!")
 
         @self.app.post('/add-tarefa')
         def add_tarefa():
@@ -159,11 +160,10 @@ class App:
             if self.ctl.start_task(user, taskid):
                 self.sio.emit('task_started', {'task_id': taskid, 'data': 'Task started'}, room=sid)
 
-
         @self.sio.event
         def finish_task(sid, user, taskid):
             if self.ctl.finish_task(user, taskid):
-                self.sio.emit('task_finished', {'task_id': taskid, 'data': 'Task finished'}, room=sid)
+                self.sio.emit('task_finished', {'task_id': taskid, 'data': 'Task finished', 'new_user_xp': self.ctl.get_xp_user(user)}, room=sid)
     
         @self.sio.event
         def recycle_task(sid, user, taskid):
@@ -177,5 +177,7 @@ class App:
 
         @self.sio.event
         def edit_task(sid, user, taskid):
-            if self.ctl.edit_tarefa():
-                self.sio.emit('task_edited', {'task_id': taskid, 'data': 'Task deleted'}, room=sid)
+            # if self.ctl.edit_tarefa():
+            #     self.sio.emit('task_edited', {'task_id': taskid, 'data': 'Task edited'}, room=sid)
+            pass
+    

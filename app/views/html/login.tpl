@@ -43,6 +43,17 @@
             <div class="col-md-6 col-lg-4">
                 <div class="card bg-dark border-light">
                     <div class="card-body">
+                        % if error_mesage is not None:
+                            % if error_mesage != "Usuário cadastrado com sucesso":
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error_mesage }}
+                                </div>
+                            % else:
+                                <div class="alert alert-success" role="alert">
+                                    {{ error_mesage }}
+                                </div>
+                            % end
+                        % end
                         <h1 class="text-center text-white mb-4">Login</h1>
                         <form action="/login" method="POST">
                             <div class="mb-3">

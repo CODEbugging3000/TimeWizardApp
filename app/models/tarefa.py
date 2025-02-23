@@ -24,3 +24,6 @@ class Tarefa:
             return 20
         elif prioridade == "muito alta":
             return 25
+
+    def __str__(self):
+        return f"Tarefa: {self.titulo} - Prioridade: {self.prioridade} - Tempo: {self.tempo} - Data Limite: {self.data_limite} - Tags: {self.tags} - Status: {self.status}"

@@ -2,9 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../../static/icons/favicon.ico">
     <link rel = "stylesheet" href = "../../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link href="../../static/css/home.css" rel="stylesheet" type="text/css" >
     <title>Time Wizard App</title>
 </head>
@@ -22,12 +24,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="d-flex gap-2">
+                    <span id="user_xp" class="badge rounded-pill text-center text-bg-light">XP: {{user.xp}}</span>
                     <button type="button" id="profile-button" class="btn btn-outline-light d-flex align-items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                         </svg>
-                        Perfil
+                        {{user.name}}
                     </button>
                     <a href="/logout" style="padding-right: 10px;">
                         <button type="button" class="btn btn-outline-light">Logout</button>
@@ -36,7 +39,7 @@
             </div>
         </nav>
     </header>
-
+    <div class="notifications"></div>
     <main class="container-fluid">
         <div class="row">
             <nav class="nav flex-column row nav-tabs sidebar bg-dark d-flex col-2">
@@ -61,7 +64,7 @@
                                 <div class="card-body">
                                     <div class="card-head d-flex justify-content-between">
                                         % for tarefa in tarefas:
-                                            % if habito.id_tarefa == tarefa.id:
+                                            % if habito.tarefa.id == tarefa.id:
                                                 <h5 class="card-title">{{tarefa.titulo}}</h5>
                                                 % if tarefa.prioridade.lower() == "muito alta":
                                                     <span class="badge text-bg-danger text-center">{{tarefa.prioridade}}</span>
@@ -272,7 +275,12 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <button id="done-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn btn-success col-12 mt-2">Tarefa Concluída</button>
+                                            <button id="done-task-{{tarefa.id}}" type="button" data-value="{{tarefa.id}}" class="btn btn-success col-12 mt-2">
+                                                Reciclar Tarefa
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-recycle" viewBox="0 0 16 16">
+                                                    <path d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.5.5 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                 % end
@@ -383,10 +391,20 @@
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Perfil</h5>
-                        <p class="card-text">Nome: {{user.name}}</p>
-                        <p id="user" data-value="{{user.email}}" class="card-text">Email: {{user.email}}</p>
-                        <p class="card-text">Senha: ***********</p>
-                        <p class="card-text">XP: {{user.xp}}</p>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item bg-transparent">
+                                <p class="card-text">Nome: {{user.name}}</p>
+                            </li>
+                            <li id="user" data-value="{{user.email}}"  class="list-group-item bg-transparent">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope me-2" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+                                </svg>{{user.email}}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <p class="card-text">Senha: ***********</p>
+                            </li>
+                            <p id="user_xp" class="card-text">XP: {{user.xp}}</p>
+                        </ul>
                         <button type="button" class="btn btn-secondary">Editar</button>
                     </div>
                 </div>

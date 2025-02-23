@@ -43,6 +43,11 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card bg-dark border-light">
                         <div class="card-body">
+                            % if error_mesage:
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error_mesage }} <a href="/login">Login</a>
+                                </div>
+                            % end
                             <h1 class="text-center text-white mb-4">Cadastrar</h1>
                             <form action="/cadastrar" method="POST">
                                 <div class="mb-3">
