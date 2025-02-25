@@ -7,9 +7,9 @@ O projeto foi desenvolvido utilizando o framework web Bottle e o framework de so
 
 ![Time Wizard](https://raw.githubusercontent.com/CODEbugging3000/TimeWizardApp/refs/heads/main/app/static/img/Home-Preview.jpeg)
 
-![Time Wizard](https://raw.githubusercontent.com/CODEbugging3000/TimeWizardApp/refs/heads/main/app/static/img/AddTask-Preview.jpeg)
+![Time Wizard](https://raw.githubusercontent.com/CODEbugging3000/TimeWizardApp/refs/heads/main/app/static/img/AddTask-preview.jpeg)
 
-![Time Wizard](https://raw.githubusercontent.com/CODEbugging3000/TimeWizardApp/refs/heads/main/app/static/img/AddHabit-Preview.jpeg)
+![Time Wizard](https://raw.githubusercontent.com/CODEbugging3000/TimeWizardApp/refs/heads/main/app/static/img/AddHabit-preview.jpeg)
 
 ## Saiba mais sobre o projeto aqui⬇️
 ![Notion icon](https://img.icons8.com/?size=25&id=HDd694003FZa&format=png&color=000000) [Notion sobre o projeto](https://giant-captain-22a.notion.site/Time-Wizard-161e9b38400e80d1bf11cf399c9a38ba)
