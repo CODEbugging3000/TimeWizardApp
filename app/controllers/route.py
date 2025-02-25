@@ -77,9 +77,9 @@ class App:
                     # Passa o section_id para o método home
                     return self.ctl.render('home', section_id=section_id)
                 else: # Caso o usuário não esteja logado
-                    return self.ctl.render('login', error_mesage="Vocé não está logado!")
+                    return self.ctl.render('login', error_mesage="Você não está logado!")
             else:
-                return self.ctl.render('login', error_mesage="Vocé não está logado!")
+                return self.ctl.render('login', error_mesage="Você não está logado!")
 
         @self.app.post('/add-tarefa')
         def add_tarefa():

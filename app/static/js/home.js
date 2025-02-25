@@ -12,6 +12,7 @@ socket.on('task_started', (tarefa_id) => {
 socket.on('task_finished', (tarefa_id) => {
     finishTask(tarefa_id['task_id']);
     updateXp(tarefa_id['new_user_xp']);
+    sucessNotification(`Tarefa finalizada: ${tarefa_id['task_id']}`);
     console.log(`Tarefa finalizada: ${tarefa_id['task_id']}`);
 })
 socket.on('recycle_task', (tarefa_id) => {
@@ -27,23 +28,33 @@ const user = document.querySelector('#user').getAttribute('data-value');
 
 let notifications = document.querySelector('.notifications');
 
-function createToast(type, icon, title, text){
+function createToast(type, icon, title, text) {
     let newToast = document.createElement('div');
+    newToast.classList.add('toast', type); // Adiciona as classes necessárias
     newToast.innerHTML = `
-        <div class="toast ${type}">
-                <i class="${icon}"></i>
-                <div class="content">
-                    <div class="title">${title}</div>
-                    <span>${text}</span>
-                </div>
-                <i class="close fa-solid fa-xmark"
-                onclick="(this.parentElement).remove()"
-                ></i>
-            </div>`;
-
+        <i class="${icon}"></i>
+        <div class="content">
+            <div class="title">${title}</div>
+            <span>${text}</span>
+        </div>
+        <i class="close fa-solid fa-xmark"
+            onclick="(this.parentElement).remove()"></i>`;
     notifications.appendChild(newToast);
-    newToast.timeOut = setTimeout(() => {newToast.remove()}, 5000);
+
+    // Adiciona a classe 'show' após um pequeno delay para permitir a animação
+    setTimeout(() => {
+        newToast.classList.add('show');
+    }, 100); 
+
+    // Remove a notificação após 5 segundos
+    setTimeout(() => {
+        newToast.classList.remove('show');
+        setTimeout(() => {
+            newToast.remove();
+        }, 300); // Tempo para a animação de saída
+    }, 5000); 
 }
+
 // Função para mostrar a seção desejada e esconder as outras
 const showSection = (sectionId) => {
     // Lista de IDs das seções da página
@@ -55,10 +66,44 @@ const showSection = (sectionId) => {
         }
     });
 };
+function sucessNotification(message) {
+    // Notificação de sucesso
+    let type = 'success';
+    let icon = 'fa-solid fa-circle-check';
+    let title = 'Success';
+    let text = '' + message + '';
+    createToast(type, icon, title, text);
+    }
+
+function warningNotification(message) {
+    // Notificação de alerta
+    let type = 'warning';
+    let icon = 'fa-solid fa-triangle-exclamation';
+    let title = 'Warning';
+    let text = '' + message + '';
+    createToast(type, icon, title, text);
+}
+
+function errorNotification(message) {
+    // Notificação de erro
+    let type = 'error';
+    let icon = 'fa-solid fa-circle-xmark';
+    let title = 'Error';
+    let text = '' + message + '';
+    createToast(type, icon, title, text);
+}
+
+function infoNotification(message) {
+    // Notificação de informação
+    let type = 'info';
+    let icon = 'fa-solid fa-circle-info';
+    let title = 'Info';
+    let text = '' + message + '';
+    createToast(type, icon, title, text);
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Notificação de sucesso
-    createToast('success', 'fa-solid fa-circle-check', 'Sucesso', 'Login efetuado com sucesso.');
+    sucessNotification("Login efetuado com sucesso!");
 
     // Adiciona evento de clique nos links da sidebar
     const navLinks = document.querySelectorAll(".nav-link");
@@ -189,7 +234,7 @@ function recycleTask(id_tarefa) {
     span.classList.remove('text-bg-success');
     span.classList.add('text-bg-danger');
     span.textContent = 'Pendente';
-
+    
     // muda o texto e ID do botão de reciclar para iniciar
     const button = document.querySelector(`#done-task-${id_tarefa}`);
     button.classList.remove('recycle-task');
